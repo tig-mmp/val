@@ -7,8 +7,6 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\OrderIngredient;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -18,7 +16,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::query()->select(['id', 'name', 'email'])->paginate(10);
+        // optimize query
+        // $orders = Order::query()->with(['user', 'ingredients'])->select(['user.name AS userName', 'size','base','state'])->paginate(10);
+        $orders = Order::with(['user', 'orderIngredients', 'orderIngredients.ingredient'])->paginate(10);
 
         return Inertia::render('orders/index', [
             'orders' => $orders,
@@ -36,15 +36,16 @@ class OrderController extends Controller
             'size' => $request->size,
             'base' => $request->base,
         ] + ['user_id' => Auth::user()->id]);
+        // TODO optimize
         foreach ($request->ingredients as $ingredient) {
             OrderIngredient::query()->create([
-                'orderId' => $order->id,
-                'ingredient' => $ingredient['id'],
+                'order_id' => $order->id,
+                'ingredient_id' => $ingredient['id'],
             ]);
         }
         // TODO to_route with success message
-        
-        return to_route('Dashboard');
+
+        return to_route('dashboard');
     }
 
     /**
@@ -71,8 +72,7 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, Order $order)
     {
         $order->update([
-            'size' => $request->size,
-            'base' => $request->base,
+            'state' => $request->state,
         ]);
 
         return to_route('orders.index');
@@ -83,7 +83,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        if (!$order->orders()->count()) {
+        if (! $order->orders()->count()) {
             $order->delete();
         } else {
             Order::forceDestroy($order->id);

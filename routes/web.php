@@ -19,4 +19,4 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'
 Route::resource('users', UserController::class)->middleware(IsAdmin::class);
 Route::resource('orders', OrderController::class)->except('create');
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

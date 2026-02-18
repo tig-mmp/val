@@ -13,23 +13,23 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import AppLogo from './AppLogo.vue';
-import { dashboard } from '@/routes';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Encomendar',
         href: dashboard(),
         icon: LayoutGrid,
     },
     {
-        title: 'Users',
+        title: 'Utilizadores',
         href: '/users',
         icon: User,
     },
     {
-        title: 'Orders',
+        title: 'Encomendas',
         href: '/orders',
         icon: LayoutGrid,
     },

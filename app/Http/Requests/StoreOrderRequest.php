@@ -24,7 +24,7 @@ class StoreOrderRequest extends FormRequest
     {
         // TODO fix array rules and allow empty array
         return [
-            'size' => ['required', 'string', 'in:' . implode(',', Order::SIZES)],
+            'size' => ['required', 'string', 'in:'.implode(',', Order::SIZES)],
             'base' => ['required', 'string', 'max:255'],
             // 'ingredients' => ['array:id'],
             // 'ingredients.*.id' => ['int'],

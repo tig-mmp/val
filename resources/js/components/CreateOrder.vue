@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import InputError from '@/components/InputError.vue';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { ref } from 'vue';
+import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import type { Ingredient } from '@/types';
 
-const props = defineProps<{ ingredients?: any[] }>();
+const props = defineProps<{ ingredients?: Ingredient[] }>();
 
 const form = useForm({
     size: null,
@@ -26,7 +27,7 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="mb-4 text-center text-sm font-medium text-green-600">
+    <div class="mb-4 text-center text-sm font-medium">
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="mt-4 grid gap-2">
@@ -49,7 +50,7 @@ const submit = () => {
                 </div>
                 <div class="mt-4 grid gap-2">
                     <Label for="name">Extra Ingredients</Label>
-                    <div v-for="ingredient in ingredients" :key="ingredient.id">
+                    <div v-for="ingredient in props.ingredients" :key="ingredient.id">
                         <label>{{ ingredient.name }}</label>
                         <input
                             type="checkbox"
@@ -60,7 +61,7 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.ingredients" />
                 </div>
                 <div class="mt-4 flex items-center gap-4">
-                    <Button :disabled="form.processing">Create order</Button>
+                    <Button :disabled="form.processing">Efetuar encomendas</Button>
                 </div>
             </div>
         </form>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
-import { dashboard } from '@/routes';
 import CreateOrder from '@/components/CreateOrder.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { dashboard } from '@/routes';
+import { type BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Encomendar',
         href: dashboard().url,
     },
 ];
@@ -17,7 +17,7 @@ const props= defineProps<{ ingredients?: any[] }>();
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Encomendar" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div

@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
-import type {
-    BreadcrumbItem,
-    Pagination as PaginationType,
-    UserList,
-} from '@/types';
 import { Head,Link } from '@inertiajs/vue3';
 import Pagination from '@/components/Pagination.vue';
 import {
@@ -16,6 +10,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import AppLayout from '@/layouts/AppLayout.vue';
+import type {
+    BreadcrumbItem,
+    Pagination as PaginationType,
+    UserList,
+} from '@/types';
 
 const props = defineProps<{ users: PaginationType<UserList> }>();
 

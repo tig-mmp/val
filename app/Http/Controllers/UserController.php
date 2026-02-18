@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -89,7 +87,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if (!$user->orders()->count()) {
+        if (! $user->orders()->count()) {
             $user->delete();
         } else {
             User::forceDestroy($user->id);

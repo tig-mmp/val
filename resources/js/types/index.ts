@@ -18,3 +18,17 @@ export type UserList = {
     name: string;
     email: string;
 };
+
+export type OrderList = {
+    id: number;
+    userName: string;
+    size: string;
+    base: string;
+    state: string;
+    ingredients: string[];
+};
+
+export type Ingredient = {
+    id: number;
+    name: string;
+};
