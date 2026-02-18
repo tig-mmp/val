@@ -23,3 +23,12 @@ In order to ensure that the Laravel community is welcoming to all, please review
 ## License
 
 The Laravel + Vue starter kit is open-sourced software licensed under the MIT license.
+
+## Run locally
+
+PHP version 8.4
+
+- copy .env.example and rename it to .env
+- `composer install`
+- `npm install`
+- `composer dev`
