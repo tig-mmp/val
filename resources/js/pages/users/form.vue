@@ -45,7 +45,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head email="User Edit" />
+    <Head title="User Edit" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div

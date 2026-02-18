@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
+use App\Models\OrderIngredient;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
@@ -13,15 +18,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $orders = Order::query()->select(['id', 'name', 'email'])->paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Inertia::render('orders/index', [
+            'orders' => $orders,
+        ]);
     }
 
     /**
@@ -29,7 +30,21 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
+        $request->validated();
+
+        $order = Order::query()->create([
+            'size' => $request->size,
+            'base' => $request->base,
+        ] + ['user_id' => Auth::user()->id]);
+        foreach ($request->ingredients as $ingredient) {
+            OrderIngredient::query()->create([
+                'orderId' => $order->id,
+                'ingredient' => $ingredient['id'],
+            ]);
+        }
+        // TODO to_route with success message
+        
+        return to_route('Dashboard');
     }
 
     /**
@@ -37,7 +52,9 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return Inertia::render('orders/show', [
+            'order' => $order,
+        ]);
     }
 
     /**
@@ -45,7 +62,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        return Inertia::render('orders/form', ['order' => $order]);
     }
 
     /**
@@ -53,7 +70,12 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $order->update([
+            'size' => $request->size,
+            'base' => $request->base,
+        ]);
+
+        return to_route('orders.index');
     }
 
     /**
@@ -61,6 +83,12 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        if (!$order->orders()->count()) {
+            $order->delete();
+        } else {
+            Order::forceDestroy($order->id);
+        }
+
+        return to_route('orders.index');
     }
 }

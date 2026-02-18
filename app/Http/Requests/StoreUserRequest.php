@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreOrderRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +21,9 @@ class StoreOrderRequest extends FormRequest
      */
     public function rules(): array
     {
-        // TODO fix array rules and allow empty array
         return [
-            'size' => ['required', 'string', 'in:' . implode(',', Order::SIZES)],
-            'base' => ['required', 'string', 'max:255'],
-            // 'ingredients' => ['array:id'],
-            // 'ingredients.*.id' => ['int'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ];
     }
 }

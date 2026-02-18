@@ -21,8 +21,10 @@ return new class extends Migration
             // TODO set english names in the database
             $table->enum('size', ['Individual', 'Média', 'Grande', 'Familiar'])
                 ->default('Individual');
+            // TODO add table for bases/pizzas?
             $table->string('base')->max(255);
-            $table->string('state')->max(255);
+            $table->enum('state', ['Pendente', 'Concluído', 'Cancelado'])
+                ->default('Pendente');
         });
     }
 

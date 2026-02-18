@@ -13,6 +13,10 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
+    public const array SIZES = ['Individual','Média','Grande','Familiar'];
+    public const array STATES = ['Pendente', 'Concluído', 'Cancelado'];
+    public const string STATE_PENDING = 'Pendente';
+
     /**
      * The attributes that are mass assignable.
      *

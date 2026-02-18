@@ -28,6 +28,11 @@ const mainNavItems: NavItem[] = [
         href: '/users',
         icon: User,
     },
+    {
+        title: 'Orders',
+        href: '/orders',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

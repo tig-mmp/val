@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // TODO UserRequest, test types
+        // test types
         $users = User::query()->select(['id', 'name', 'email'])->paginate(10);
 
         return Inertia::render('users/index', [
@@ -34,14 +37,8 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        // TODO create request with rules and authorize
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        ]);
-
         $password = Hash::make(Str::random(30));
 
         User::query()->create([
@@ -75,12 +72,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'.$user->id],
-        ]);
+        $request->validated();
 
         $user->update([
             'name' => $request->name,
@@ -95,12 +89,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        // TODO remove comment
-        // if (!$user->orders()->count()) {
-        $user->delete();
-        // } else {
-        // User::forceDestroy($user->id);
-        // }
+        if (!$user->orders()->count()) {
+            $user->delete();
+        } else {
+            User::forceDestroy($user->id);
+        }
 
         return to_route('users.index');
     }
