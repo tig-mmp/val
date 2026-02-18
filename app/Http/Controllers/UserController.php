@@ -94,8 +94,15 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        // TODO remove comment
+        // if (!$user->orders()->count()) {
+            $user->delete();
+        // } else {
+            // User::forceDestroy($user->id);
+        // }
+
+        return to_route('users.index');
     }
 }
