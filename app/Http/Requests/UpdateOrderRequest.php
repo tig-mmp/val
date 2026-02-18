@@ -24,7 +24,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'state' => ['required', 'string', 'in:'.implode(',', Order::STATES)],
+            'state' => ['required', 'string', 'in:' . implode(',', Order::STATES)],
         ];
     }
 }
