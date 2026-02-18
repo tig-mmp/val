@@ -37,3 +37,6 @@ PHP version 8.4
 
 - Enum im php
 - To test use `admin@example.com`, `manager@example.com` or `client@example.com` as email and `password` as password
+- Hidden buttons from navbar in frontend
+- Added packages for styling and type checking
+    - Added `test` and `lint` commands to composer that runs all the commands in backend and frontend
