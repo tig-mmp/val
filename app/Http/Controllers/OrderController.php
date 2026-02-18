@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\OrderIngredient;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -14,14 +15,31 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user_name = (string) $request->input('user_name');
+        $states = (array) request('states');
+        $search = (string) $request->input('search');
+        // TODO https://laravel.com/docs/12.x/search
+
         // optimize query
         // $orders = Order::query()->with(['user', 'ingredients'])->select(['user.name AS userName', 'size','base','state'])->paginate(10);
-        $orders = Order::with(['user', 'orderIngredients', 'orderIngredients.ingredient'])->paginate(10);
+
+        $query = Order::query()->with(['user', 'orderIngredients', 'orderIngredients.ingredient']);
+
+        // if (! is_null($user_name) && $user_name !== '') {
+        //     $query->where('user.name', 'like', '%' . $user_name . '%');
+        // }
+        if (! empty($states)) {
+            $query->whereIn('state', $states);
+        }
+        $orders = $query->paginate(10);
 
         return Inertia::render('orders/index', [
             'orders' => $orders,
+            'user_name' => $user_name,
+            'states' => $states,
+            'search' => $search,
         ]);
     }
 

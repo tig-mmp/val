@@ -43,7 +43,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
         >
             <Table>
-                <TableCaption>A list of your recent users.</TableCaption>
+                <TableCaption>Utilizadores</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>

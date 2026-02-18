@@ -41,6 +41,7 @@ export default defineConfigWithVueTs(
                     },
                 },
             ],
+            'vue/no-v-text-v-html-on-component': 'off'
         },
     },
     prettier,

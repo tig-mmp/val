@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import {
@@ -12,18 +12,39 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
-import type {
-    BreadcrumbItem,
-    Pagination as PaginationType,
-} from '@/types';
+import type { BreadcrumbItem, Pagination as PaginationType } from '@/types';
 
 // const props = defineProps<{ orders: PaginationType<OrderList> }>();
-const props = defineProps<{ orders: PaginationType<any> }>();
+const props = defineProps<{
+    orders: PaginationType<any>;
+    user_name?: string;
+    states?: string[];
+    search?: string;
+}>();
 
 const updateStateForm = useForm<{
     orderId: number | null;
     state: string | null;
 }>({ orderId: null, state: null });
+const filters = useForm<{
+    user_name?: string;
+    states?: string[];
+    search?: string;
+}>({
+    user_name: props.user_name,
+    states: props.states,
+    search: props.search,
+});
+
+const statePending = 'Pendente';
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Orders',
+        href: '/orders',
+    },
+];
+const optionStates = ref<string[]>([statePending, 'Concluído', 'Cancelado']);
+
 const updateState = (orderId: number, state: string) => {
     updateStateForm.state = state;
     updateStateForm.patch(`/orders/${orderId}`, {
@@ -32,25 +53,66 @@ const updateState = (orderId: number, state: string) => {
         },
     });
 };
-const statePending = "Pendente";
-const states = ref<string[]>([statePending, 'Concluído', 'Cancelado']);
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Orders',
-        href: '/orders',
-    },
-];
+const fetch = () => {
+    console.log(filters);
+    console.log(filters.user_name);
+    
+    filters.get('/orders', {
+    });
+};
 </script>
 
 <template>
     <Head title="Orders" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <div class="mb-2 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="flex flex-col">
+                        <Label for="filter-name">Utilizador</Label>
+                        <Input
+                            v-model="filters.user_name"
+                            id="filter-user-name"
+                            type="text"
+                            class="mt-1 w-64"
+                            placeholder="Nome do utilizador"
+                            @keyup.enter="fetch"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <Label for="filter-states">Estados</Label>
+                        <select
+                            v-model="filters.states"
+                            class="rounded border"
+                            @change="fetch"
+                        >
+                            <option
+                                v-for="state in optionStates"
+                                :key="state"
+                                :value="state"
+                            >
+                                {{ state }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col">
+                        <Label for="filter-name">Pesquisa avançada</Label>
+                        <Input
+                            id="filter-search"
+                            type="search"
+                            class="mt-1 w-64"
+                            placeholder="Pesquisa avançada"
+                            v-model="filters.search"
+                            @keyup.enter="fetch"
+                        />
+                    </div>
+                </div>
+            </div>
             <div
                 class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
             >
                 <Table>
-                    <TableCaption>A list of your recent orders.</TableCaption>
+                    <TableCaption>Encomendas</TableCaption>
                     <TableHeader>
                         <TableRow>
                             <TableHead>User</TableHead>
@@ -58,7 +120,6 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableHead>Base</TableHead>
                             <TableHead>Ingredients</TableHead>
                             <TableHead>State</TableHead>
-                            <TableHead class="text-right"> Actions </TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -75,14 +136,17 @@ const breadcrumbs: BreadcrumbItem[] = [
                                     .join(', ')
                             }}</TableCell>
                             <TableCell>
-                                <template v-if="order.state !== statePending">{{order.state}}</template>
-                                <select v-else
+                                <template v-if="order.state !== statePending">{{
+                                    order.state
+                                }}</template>
+                                <select
+                                    v-else
                                     v-model="order.state"
                                     class="rounded border"
                                     @change="updateState(order.id, order.state)"
                                 >
                                     <option
-                                        v-for="state in states"
+                                        v-for="state in optionStates"
                                         :key="state"
                                         :value="state"
                                     >
@@ -90,18 +154,6 @@ const breadcrumbs: BreadcrumbItem[] = [
                                     </option>
                                 </select>
                                 <!-- TODO confirmation -->
-                            </TableCell>
-                            <TableCell class="flex justify-end gap-2">
-                                <Link
-                                    :href="`/orders/${order.id}`"
-                                    class="text-green-500 hover:text-green-600"
-                                    >Show</Link
-                                >
-                                <Link
-                                    :href="`/orders/${order.id}/edit`"
-                                    class="text-indigo-500 hover:text-indigo-600"
-                                    >Edit</Link
-                                >
                             </TableCell>
                         </TableRow>
                     </TableBody>
