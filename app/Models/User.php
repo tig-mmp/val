@@ -13,6 +13,10 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable, SoftDeletes;
+
+    public const string ROLE_ADMIN = 'admin';
+    public const string ROLE_MANAGER = 'manager';
+    public const string ROLE_CLIENT = 'client';
     
     /**
      * The attributes that are mass assignable.
@@ -53,16 +57,16 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === User::ROLE_ADMIN;
     }
 
     public function isManager(): bool
     {
-        return $this->role === 'manager';
+        return $this->role === User::ROLE_MANAGER;
     }
 
     public function isClient(): bool
     {
-        return $this->role === 'client';
+        return $this->role === User::ROLE_CLIENT;
     }
 }

@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table): void {
-            $table->string('role')->max(10)->default('client');
-            // TODO use database and php enums
-            // $table->enum('role', ['admin', 'manager', 'client']);
+            $table->enum('role', ['admin', 'manager', 'client'])
+                ->default('client');
         });
     }
 
