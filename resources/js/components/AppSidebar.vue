@@ -14,10 +14,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { UserRole } from '@/enums/UserRole';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import AppLogo from './AppLogo.vue';
-import { UserRole } from '@/enums/UserRole';
 
 const page = usePage();
 

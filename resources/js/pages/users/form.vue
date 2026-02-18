@@ -34,7 +34,7 @@ const submit = () => {
                 form.reset();
             },
         });
-    } else {    
+    } else {
         form.put(`/users/${props.user.id}`, {
             onSuccess: () => {
                 form.reset();
@@ -52,7 +52,7 @@ const submit = () => {
             class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
         >
             <form @submit.prevent="submit">
-                <div class="grid gap-2 mt-4">
+                <div class="mt-4 grid gap-2">
                     <Label for="name">Name</Label>
                     <Input
                         id="name"
@@ -65,7 +65,7 @@ const submit = () => {
                     />
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
-                <div class="grid gap-2 mt-4">
+                <div class="mt-4 grid gap-2">
                     <Label for="email">Email</Label>
                     <Input
                         id="email"
@@ -79,7 +79,7 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
 
-                <div class="flex items-center gap-4 mt-4">
+                <div class="mt-4 flex items-center gap-4">
                     <Button :disabled="form.processing">Update</Button>
                 </div>
             </form>

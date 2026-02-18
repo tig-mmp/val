@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ingredients', function (Blueprint $table) {
+        Schema::create('ingredients', function (Blueprint $table): void {
             $table->id();
             $table->timestamps();
             $table->string('name');

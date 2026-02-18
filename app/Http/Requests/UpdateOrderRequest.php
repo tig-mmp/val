@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Order;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateOrderRequest extends FormRequest
@@ -13,18 +14,19 @@ class UpdateOrderRequest extends FormRequest
     public function authorize(): bool
     {
         $order = $this->route('order');
+
         return $order->state !== Order::STATE_COMPLETE;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'state' => ['required', 'string', 'in:' . implode(',', Order::STATES)],
+            'state' => ['required', 'string', 'in:'.implode(',', Order::STATES)],
         ];
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->index('user_id');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('size', ['Individual', 'Média', 'Grande', 'Familiar'])
                 ->default('Individual');
             // TODO add table for bases/pizzas?
-            $table->string('base')->max(255);
+            $table->string('base');
             $table->enum('state', ['Pendente', 'Concluído', 'Cancelado'])
                 ->default('Pendente');
         });

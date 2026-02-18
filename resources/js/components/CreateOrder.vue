@@ -16,7 +16,7 @@ const form = useForm({
 
 const sizes = ref<string[]>(['Individual', 'Média', 'Grande', 'Familiar']);
 // TODO create table bases/pizzas
-const bases = ref<string[]>(['Havaiana',' Fiambre']);
+const bases = ref<string[]>(['Havaiana', ' Fiambre']);
 const submit = () => {
     form.post(`/orders`, {
         onSuccess: () => {
@@ -50,18 +50,26 @@ const submit = () => {
                 </div>
                 <div class="mt-4 grid gap-2">
                     <Label for="name">Ingredientes extra</Label>
-                    <div v-for="ingredient in props.ingredients" :key="ingredient.id">
-                        <label class=" mr-2">{{ ingredient.name }}</label>
+                    <div
+                        v-for="ingredient in props.ingredients"
+                        :key="ingredient.id"
+                    >
+                        <label class="mr-2">{{ ingredient.name }}</label>
                         <input
                             type="checkbox"
                             v-model="form.ingredients"
                             :value="ingredient"
                         />
                     </div>
-                    <InputError class="mt-2" :message="form.errors.ingredients" />
+                    <InputError
+                        class="mt-2"
+                        :message="form.errors.ingredients"
+                    />
                 </div>
                 <div class="mt-4 flex items-center gap-4">
-                    <Button :disabled="form.processing">Efetuar encomendas</Button>
+                    <Button :disabled="form.processing"
+                        >Efetuar encomendas</Button
+                    >
                 </div>
             </div>
         </form>

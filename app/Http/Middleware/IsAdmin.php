@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,7 +16,7 @@ final class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! Auth::check()) {
+        if (! FacadesAuth::check()) {
             return to_route('login')
                 ->with('error', 'Please log in to access this area.');
         }

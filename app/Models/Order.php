@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,14 +10,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderFactory> */
+    /** @use HasFactory<OrderFactory> */
     use HasFactory;
 
     public const array SIZES = ['Individual', 'Média', 'Grande', 'Familiar'];
 
     public const array STATES = ['Pendente', 'Concluído', 'Cancelado'];
-    
+
     public const string STATE_COMPLETE = 'Concluído';
+
     public const string STATE_PENDING = 'Pendente';
 
     /**
@@ -33,7 +35,7 @@ class Order extends Model
 
     public function ingredients(): HasMany
     {
-        return $this->hasMany(Ingredient::class)->using(OrderIngredient::class);
+        return $this->hasMany(OrderIngredient::class);
     }
 
     public function orderIngredients(): HasMany

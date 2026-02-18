@@ -12,8 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const props= defineProps<{ ingredients?: any[] }>();
-
+const props = defineProps<{ ingredients?: any[] }>();
 </script>
 
 <template>

@@ -8,13 +8,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('home');
+Route::get('/', fn () => Inertia::render('Welcome', [
+    'canRegister' => Features::enabled(Features::registration()),
+]))->name('home');
 
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 Route::resource('users', UserController::class)->middleware(IsAdmin::class);
 Route::resource('orders', OrderController::class)->except('create');

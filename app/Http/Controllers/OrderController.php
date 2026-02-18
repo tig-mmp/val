@@ -6,16 +6,19 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\OrderIngredient;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $user_name = (string) $request->input('user_name');
         $states = (array) request('states');
@@ -26,24 +29,24 @@ class OrderController extends Controller
 
         $query = Order::query()->with(['user', 'orderIngredients', 'orderIngredients.ingredient']);
 
-        if (! is_null($user_name) && $user_name !== '') {
-            $query->whereHas('user', function ($q) use ($user_name): void {
-                $q->where('name', 'like', '%' . $user_name . '%');
-            });  
+        if ($user_name !== '') {
+            $query->whereHas('user', function (Builder $q) use ($user_name): void {
+                $q->where('name', 'like', '%'.$user_name.'%');
+            });
         }
-        
-        if (! empty($states)) {
+
+        if ($states !== []) {
             $query->whereIn('state', $states);
         }
 
-        if (! is_null($search) && $search !== '') {
+        if ($search !== '') {
             $query->whereAny([
-                    'size',
-                    'base',
-                    'state',
-                ], 'like', '%' . $search . '%');
+                'size',
+                'base',
+                'state',
+            ], 'like', '%'.$search.'%');
         }
-        
+
         $orders = $query->paginate(10);
 
         return Inertia::render('orders/index', [
@@ -57,7 +60,7 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request): RedirectResponse
     {
         $request->validated();
 
@@ -80,7 +83,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order): Response
     {
         return Inertia::render('orders/show', [
             'order' => $order,
@@ -90,7 +93,7 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function edit(Order $order): Response
     {
         return Inertia::render('orders/form', ['order' => $order]);
     }
@@ -98,25 +101,11 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderRequest $request, Order $order)
+    public function update(UpdateOrderRequest $request, Order $order): RedirectResponse
     {
         $order->update([
             'state' => $request->state,
         ]);
-
-        return to_route('orders.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        if (! $order->orders()->count()) {
-            $order->delete();
-        } else {
-            Order::forceDestroy($order->id);
-        }
 
         return to_route('orders.index');
     }

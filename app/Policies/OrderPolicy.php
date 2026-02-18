@@ -10,7 +10,7 @@ class OrderPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return false;
     }
@@ -18,7 +18,7 @@ class OrderPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Order $order)
+    public function view(User $user, Order $order): bool
     {
         return false;
     }
@@ -26,7 +26,7 @@ class OrderPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -34,7 +34,7 @@ class OrderPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Order $order)
+    public function update(User $user, Order $order): bool
     {
         return false;
     }
@@ -42,7 +42,7 @@ class OrderPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Order $order)
+    public function delete(User $user, Order $order): bool
     {
         return false;
     }
@@ -50,7 +50,7 @@ class OrderPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Order $order)
+    public function restore(User $user, Order $order): bool
     {
         return false;
     }
@@ -58,7 +58,7 @@ class OrderPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Order $order)
+    public function forceDelete(User $user, Order $order): bool
     {
         return false;
     }

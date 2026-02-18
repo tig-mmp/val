@@ -17,8 +17,8 @@ const props = defineProps<{ user: UserList }>();
     <Head title="Users" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
-        <div>Name: {{ props.user.name }}</div>
-        <div>Email: {{ props.user.email }}</div>
+            <div>Name: {{ props.user.name }}</div>
+            <div>Email: {{ props.user.email }}</div>
         </div>
     </AppLayout>
 </template>

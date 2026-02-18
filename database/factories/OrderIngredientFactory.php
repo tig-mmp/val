@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Order;
+use App\Models\OrderIngredient;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Order>
+ * @extends Factory<OrderIngredient>
  */
-class IngredientFactory extends Factory
+class OrderIngredientFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class IngredientFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            //
         ];
     }
 }
