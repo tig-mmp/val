@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import type {
     BreadcrumbItem,
     Pagination as PaginationType,
-    ListUser,
+    UserList,
 } from '@/types';
 import { Head,Link } from '@inertiajs/vue3';
 import Pagination from '@/components/Pagination.vue';
@@ -17,7 +17,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-const props = defineProps<{ users: PaginationType<ListUser> }>();
+const props = defineProps<{ users: PaginationType<UserList> }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -71,6 +71,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 class="text-indigo-500 hover:text-indigo-600"
                                 >Edit</Link
                             >
+                            <!-- TODO confirmation -->
                             <Link
                                 :href="`/users/${user.id}`"
                                 method="delete"

@@ -13,7 +13,7 @@ export type Pagination<T> = {
     links: PaginationLink[];
 };
 
-export type ListUser = {
+export type UserList = {
     id: number;
     name: string;
     email: string;
