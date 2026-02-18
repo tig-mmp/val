@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -76,5 +78,12 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes): array => [
             'role' => 'client',
         ]);
+    }
+
+    public function withOrders(int $count = 3): static
+    {
+        return $this->afterCreating(function (User $user) use ($count): void {
+            Order::factory()->count($count)->create(['user_id' => $user->id]);
+        });
     }
 }
