@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->index('user_id');
-            
+
             $table->timestamps();
 
             // TODO set english names in the database or set as a number

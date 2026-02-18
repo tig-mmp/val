@@ -12,12 +12,14 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     public const string ROLE_ADMIN = 'admin';
+
     public const string ROLE_MANAGER = 'manager';
+
     public const string ROLE_CLIENT = 'client';
-    
+
     /**
      * The attributes that are mass assignable.
      *

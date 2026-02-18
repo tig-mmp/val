@@ -18,6 +18,7 @@ class OrderFactory extends Factory
     {
         $sizes = ['Individual', 'Média', 'Grande', 'Familiar'];
         $bases = ['Chourição', 'Fiambre', 'Queijo'];
+
         return [
             'size' => fake()->randomElement($sizes),
             'base' => fake()->randomElement($bases),

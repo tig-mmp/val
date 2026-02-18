@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Ingredient extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderFactory> */
+    /** @use HasFactory<\Database\Factories\IngredientFactory> */
     use HasFactory;
 
     /**
@@ -16,8 +16,6 @@ class Order extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'user_id',
-        'size',
-        'base',
+        'name',
     ];
 }

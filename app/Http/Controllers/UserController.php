@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -80,7 +79,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email' . $user->id],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'.$user->id],
         ]);
 
         $user->update([
@@ -98,9 +97,9 @@ class UserController extends Controller
     {
         // TODO remove comment
         // if (!$user->orders()->count()) {
-            $user->delete();
+        $user->delete();
         // } else {
-            // User::forceDestroy($user->id);
+        // User::forceDestroy($user->id);
         // }
 
         return to_route('users.index');
