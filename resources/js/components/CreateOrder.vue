@@ -31,7 +31,7 @@ const submit = () => {
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="mt-4 grid gap-2">
-                    <Label for="name">Size</Label>
+                    <Label for="name">Tamanho</Label>
                     <select v-model="form.size" class="rounded border">
                         <option v-for="size in sizes" :key="size" :value="size">
                             {{ size }}
@@ -49,9 +49,9 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.base" />
                 </div>
                 <div class="mt-4 grid gap-2">
-                    <Label for="name">Extra Ingredients</Label>
+                    <Label for="name">Ingredientes extra</Label>
                     <div v-for="ingredient in props.ingredients" :key="ingredient.id">
-                        <label>{{ ingredient.name }}</label>
+                        <label class=" mr-2">{{ ingredient.name }}</label>
                         <input
                             type="checkbox"
                             v-model="form.ingredients"

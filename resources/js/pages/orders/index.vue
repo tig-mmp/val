@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { Input } from '@/components/ui/input';
 import Pagination from '@/components/Pagination.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
     Table,
     TableBody,
