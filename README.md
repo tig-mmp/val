@@ -32,3 +32,7 @@ PHP version 8.4
 - `composer install`
 - `npm install`
 - `composer dev`
+
+## Added on this branch
+
+- Enum im php

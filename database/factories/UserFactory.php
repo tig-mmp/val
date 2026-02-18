@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -62,21 +63,21 @@ class UserFactory extends Factory
     public function admin(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'role' => 'admin',
+            'role' => UserRole::Admin,
         ]);
     }
 
     public function manager(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'role' => 'manager',
+            'role' => UserRole::Manager,
         ]);
     }
 
     public function client(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'role' => 'client',
+            'role' => UserRole::Client,
         ]);
     }
 

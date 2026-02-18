@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,12 +15,6 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
-
-    public const string ROLE_ADMIN = 'admin';
-
-    public const string ROLE_MANAGER = 'manager';
-
-    public const string ROLE_CLIENT = 'client';
 
     /**
      * The attributes that are mass assignable.
@@ -55,6 +50,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'role' => UserRole::class,
         ];
     }
 
@@ -65,16 +61,16 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === User::ROLE_ADMIN;
+        return $this->role === UserRole::Admin;
     }
 
     public function isManager(): bool
     {
-        return $this->role === User::ROLE_MANAGER;
+        return $this->role === UserRole::Manager;
     }
 
     public function isClient(): bool
     {
-        return $this->role === User::ROLE_CLIENT;
+        return $this->role === UserRole::Client;
     }
 }
