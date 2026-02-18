@@ -20,7 +20,6 @@ class OrderController extends Controller
         $user_name = (string) $request->input('user_name');
         $states = (array) request('states');
         $search = (string) $request->input('search');
-        // TODO https://laravel.com/docs/12.x/search
 
         // optimize query
         // $orders = Order::query()->with(['user', 'ingredients'])->select(['user.name AS userName', 'size','base','state'])->paginate(10);
