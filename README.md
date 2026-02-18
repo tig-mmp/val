@@ -36,3 +36,4 @@ PHP version 8.4
 ## Added on this branch
 
 - Enum im php
+- To test use `admin@example.com`, `manager@example.com` or `client@example.com` as email and `password` as password
