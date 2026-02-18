@@ -32,7 +32,8 @@ const updateState = (orderId: number, state: string) => {
         },
     });
 };
-const states = ref<string[]>(['Pendente', 'Concluído', 'Cancelado']);
+const statePending = "Pendente";
+const states = ref<string[]>([statePending, 'Concluído', 'Cancelado']);
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Orders',
@@ -74,7 +75,8 @@ const breadcrumbs: BreadcrumbItem[] = [
                                     .join(', ')
                             }}</TableCell>
                             <TableCell>
-                                <select
+                                <template v-if="order.state !== statePending">{{order.state}}</template>
+                                <select v-else
                                     v-model="order.state"
                                     class="rounded border"
                                     @change="updateState(order.id, order.state)"
@@ -87,6 +89,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                         {{ state }}
                                     </option>
                                 </select>
+                                <!-- TODO confirmation -->
                             </TableCell>
                             <TableCell class="flex justify-end gap-2">
                                 <Link

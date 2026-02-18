@@ -15,7 +15,8 @@ class Order extends Model
     public const array SIZES = ['Individual', 'Média', 'Grande', 'Familiar'];
 
     public const array STATES = ['Pendente', 'Concluído', 'Cancelado'];
-
+    
+    public const string STATE_COMPLETE = 'Concluído';
     public const string STATE_PENDING = 'Pendente';
 
     /**

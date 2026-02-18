@@ -12,7 +12,8 @@ class UpdateOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $order = $this->route('order');
+        return $order->state !== Order::STATE_COMPLETE;
     }
 
     /**
