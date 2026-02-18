@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\OrderIngredient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ingredient extends Model
 {
@@ -18,4 +20,14 @@ class Ingredient extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class)->using(OrderIngredient::class);
+    }
+
+    public function orderIngredients(): BelongsToMany
+    {
+        return $this->belongsToMany(OrderIngredient::class);
+    }
 }

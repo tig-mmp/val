@@ -18,10 +18,11 @@ return new class extends Migration
 
             $table->timestamps();
 
-            // TODO set english names in the database or set as a number
+            // TODO set english names in the database
             $table->enum('size', ['Individual', 'Média', 'Grande', 'Familiar'])
                 ->default('Individual');
             $table->string('base')->max(255);
+            $table->string('state')->max(255);
         });
     }
 

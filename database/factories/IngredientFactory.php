@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
  */
-class OrderFactory extends Factory
+class IngredientFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,13 +16,8 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        $sizes = ['Individual', 'Média', 'Grande', 'Familiar'];
-        $bases = ['Chourição', 'Fiambre', 'Queijo'];
-
         return [
-            'size' => fake()->randomElement($sizes),
-            'base' => fake()->randomElement($bases),
-            'state' => 'pending',
+            'name' => fake()->name(),
         ];
     }
 }

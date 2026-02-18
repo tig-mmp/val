@@ -20,11 +20,10 @@ class DatabaseSeeder extends Seeder
             Ingredient::factory()->create([
                 'name' => $ingredientName,
             ]);
-
         }
 
         User::factory(3)->client()->create();
-        User::factory(3)->client()->create()->withOrders(3);
+        User::factory(3)->client()->withOrders(3)->create();
         User::factory(5)->manager()->create();
         User::factory(1)->admin()->create();
 
