@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, User } from 'lucide-vue-next';
-import NavFooter from '@/components/NavFooter.vue';
+import { LayoutGrid, User } from 'lucide-vue-next';
+import { computed } from 'vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import {
@@ -16,37 +17,34 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import AppLogo from './AppLogo.vue';
+import { UserRole } from '@/enums/UserRole';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Encomendar',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Utilizadores',
-        href: '/users',
-        icon: User,
-    },
-    {
-        title: 'Encomendas',
-        href: '/orders',
-        icon: LayoutGrid,
-    },
-];
+const page = usePage();
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+const userRole = page.props.auth?.user?.role;
+const mainNavItems = computed((): NavItem[] => {
+    return [
+        {
+            title: 'Encomendar',
+            href: dashboard(),
+            icon: LayoutGrid,
+            visible: [UserRole.Admin, UserRole.Client].includes(userRole),
+        },
+        {
+            title: 'Utilizadores',
+            href: '/users',
+            icon: User,
+            visible: userRole === UserRole.Admin,
+        },
+        {
+            title: 'Encomendas',
+            href: '/orders',
+            icon: LayoutGrid,
+            visible:
+                userRole === UserRole.Admin || userRole === UserRole.Manager,
+        },
+    ];
+});
 </script>
 
 <template>
@@ -68,7 +66,6 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
             <NavUser />
         </SidebarFooter>
     </Sidebar>
