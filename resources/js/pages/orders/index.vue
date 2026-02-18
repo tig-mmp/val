@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { Input } from '@/components/ui/input';
 import Pagination from '@/components/Pagination.vue';
 import {
     Table,
@@ -26,11 +27,7 @@ const updateStateForm = useForm<{
     orderId: number | null;
     state: string | null;
 }>({ orderId: null, state: null });
-const filters = useForm<{
-    user_name?: string;
-    states?: string[];
-    search?: string;
-}>({
+const filters = useForm({
     user_name: props.user_name,
     states: props.states,
     search: props.search,
@@ -54,10 +51,9 @@ const updateState = (orderId: number, state: string) => {
     });
 };
 const fetch = () => {
-    console.log(filters);
-    console.log(filters.user_name);
-    
     filters.get('/orders', {
+        preserveState: true,
+        replace: true,
     });
 };
 </script>
@@ -69,7 +65,7 @@ const fetch = () => {
             <div class="mb-2 flex items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
                     <div class="flex flex-col">
-                        <Label for="filter-name">Utilizador</Label>
+                        <Label for="filter-user-name">Utilizador</Label>
                         <Input
                             v-model="filters.user_name"
                             id="filter-user-name"

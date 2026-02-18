@@ -27,12 +27,24 @@ class OrderController extends Controller
 
         $query = Order::query()->with(['user', 'orderIngredients', 'orderIngredients.ingredient']);
 
-        // if (! is_null($user_name) && $user_name !== '') {
-        //     $query->where('user.name', 'like', '%' . $user_name . '%');
-        // }
+        if (! is_null($user_name) && $user_name !== '') {
+            $query->whereHas('user', function ($q) use ($user_name): void {
+                $q->where('name', 'like', '%' . $user_name . '%');
+            });  
+        }
+        
         if (! empty($states)) {
             $query->whereIn('state', $states);
         }
+
+        if (! is_null($search) && $search !== '') {
+            $query->whereAny([
+                    'size',
+                    'base',
+                    'state',
+                ], 'like', '%' . $search . '%');
+        }
+        
         $orders = $query->paginate(10);
 
         return Inertia::render('orders/index', [
