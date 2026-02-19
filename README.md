@@ -49,4 +49,5 @@ PHP version 8.4
             Route::resource('users', UserController::class)->middleware('isAdmin');
         });
     ```
-    
+- Improvement on search orders
+- Added tests
