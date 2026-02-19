@@ -28,7 +28,7 @@ const mainNavItems = computed((): NavItem[] => {
             title: 'Encomendar',
             href: dashboard(),
             icon: LayoutGrid,
-            visible: [UserRole.Admin, UserRole.Client].includes(userRole),
+            visible: true,
         },
         {
             title: 'Utilizadores',
@@ -40,8 +40,7 @@ const mainNavItems = computed((): NavItem[] => {
             title: 'Encomendas',
             href: '/orders',
             icon: LayoutGrid,
-            visible:
-                userRole === UserRole.Admin || userRole === UserRole.Manager,
+            visible: true,
         },
     ];
 });

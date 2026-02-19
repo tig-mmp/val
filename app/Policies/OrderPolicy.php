@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRole;
 use App\Models\Order;
 use App\Models\User;
 
@@ -12,7 +13,7 @@ class OrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,7 +21,10 @@ class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        return false;
+        if ($user->role === UserRole::Client) {
+            return $order->user_id === $user->id;
+        }
+        return true;
     }
 
     /**
@@ -28,7 +32,7 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -36,15 +40,10 @@ class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Order $order): bool
-    {
-        return false;
+        if ($user->role === UserRole::Client) {
+            return $order->user_id === $user->id && $order->state === Order::STATE_PENDING;
+        }
+        return true;
     }
 
     /**

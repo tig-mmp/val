@@ -21,6 +21,8 @@ class Order extends Model
 
     public const string STATE_PENDING = 'Pendente';
 
+    public const string STATE_CANCELLED = 'Cancelado';
+
     /**
      * The attributes that are mass assignable.
      *

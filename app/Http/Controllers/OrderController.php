@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
@@ -20,14 +21,17 @@ class OrderController extends Controller
      */
     public function index(Request $request): Response
     {
+        $this->authorize('viewAny', Order::class);
+
         $user_name = (string) $request->input('user_name');
         $states = (array) request('states');
         $search = (string) $request->input('search');
 
-        // optimize query
-        // $orders = Order::query()->with(['user', 'ingredients'])->select(['user.name AS userName', 'size','base','state'])->paginate(10);
-
         $query = Order::query()->with(['user', 'orderIngredients', 'orderIngredients.ingredient']);
+
+        if (Auth::user()->role === UserRole::Client) {
+            $query->where('user_id', Auth::user()->id);
+        }
 
         if ($user_name !== '') {
             $query->whereHas('user', function (Builder $q) use ($user_name): void {
@@ -62,20 +66,21 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request): RedirectResponse
     {
+        $this->authorize('create', Order::class);
+
         $request->validated();
 
         $order = Order::query()->create([
             'size' => $request->size,
             'base' => $request->base,
         ] + ['user_id' => Auth::user()->id]);
-        // TODO optimize
+
         foreach ($request->ingredients as $ingredient) {
             OrderIngredient::query()->create([
                 'order_id' => $order->id,
                 'ingredient_id' => $ingredient['id'],
             ]);
         }
-        // TODO to_route with success message
 
         return to_route('dashboard');
     }
@@ -85,6 +90,8 @@ class OrderController extends Controller
      */
     public function show(Order $order): Response
     {
+        $this->authorize('view', $order);
+
         return Inertia::render('orders/show', [
             'order' => $order,
         ]);
@@ -95,6 +102,8 @@ class OrderController extends Controller
      */
     public function edit(Order $order): Response
     {
+        $this->authorize('update', $order);
+
         return Inertia::render('orders/form', ['order' => $order]);
     }
 
@@ -103,6 +112,10 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order): RedirectResponse
     {
+        $this->authorize('update', $order);
+
+        $request->validated();
+
         $order->update([
             'state' => $request->state,
         ]);
