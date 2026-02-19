@@ -32,7 +32,7 @@ const props = defineProps<{
     search?: string;
 }>();
 
-const updateStateForm = useForm<{state: string | null}>({ state: null });
+const updateStateForm = useForm<{ state: string | null }>({ state: null });
 const filters = useForm({
     user_name: props.user_name,
     states: props.states,
@@ -48,15 +48,19 @@ const breadcrumbs: BreadcrumbItem[] = [
 const statePending = 'Pendente';
 const stateCompleted = 'Concluído';
 const stateCancelled = 'Cancelado';
-const optionStates = ref<string[]>([statePending, stateCompleted, stateCancelled]);
+const optionStates = ref<string[]>([
+    statePending,
+    stateCompleted,
+    stateCancelled,
+]);
 
 const stateClass = (state: string): string => {
     return state === statePending
         ? 'text-yellow-500'
         : state === stateCompleted
-            ? 'text-green-500'
-            : 'text-red-500';
-}
+          ? 'text-green-500'
+          : 'text-red-500';
+};
 
 const updateState = (orderId: number, state: string) => {
     updateStateForm.state = state;
@@ -93,7 +97,12 @@ const fetch = () => {
                     </div>
                     <div class="flex flex-col">
                         <Label for="filter-states">Estados</Label>
-                        <Select v-model="filters.states" multiple @update:model-value="fetch">
+                        <Select
+                            v-model="filters.states"
+                            multiple
+                            @update:model-value="fetch"
+                            class="mt-1 w-64"
+                        >
                             <SelectTrigger>
                                 <SelectValue placeholder="Select os estados" />
                             </SelectTrigger>
@@ -104,14 +113,17 @@ const fetch = () => {
                                         :key="optionState"
                                         :value="optionState"
                                     >
-                                        <span :class="stateClass(optionState)">{{ optionState }}</span>
+                                        <span
+                                            :class="stateClass(optionState)"
+                                            >{{ optionState }}</span
+                                        >
                                     </SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
                     </div>
                     <div class="flex flex-col">
-                        <Label for="filter-name">Pesquisa avançada</Label>
+                        <Label for="filter-search">Pesquisa avançada</Label>
                         <Input
                             id="filter-search"
                             type="search"
@@ -151,8 +163,18 @@ const fetch = () => {
                                     .join(', ')
                             }}</TableCell>
                             <TableCell>
-                                <span v-if="order.state !== statePending" :class="stateClass(order.state)">{{ order.state }}</span>
-                                <Select v-else v-model="order.state" @update:model-value="(state) => updateState(order.id, state)">
+                                <span
+                                    v-if="order.state !== statePending"
+                                    :class="stateClass(order.state)"
+                                    >{{ order.state }}</span
+                                >
+                                <Select
+                                    v-else
+                                    v-model="order.state"
+                                    @update:model-value="
+                                        (state) => updateState(order.id, state)
+                                    "
+                                >
                                     <SelectTrigger class="w-32">
                                         <SelectValue />
                                     </SelectTrigger>
@@ -163,7 +185,10 @@ const fetch = () => {
                                                 :key="state"
                                                 :value="state"
                                             >
-                                                <span :class="stateClass(state)">{{ state }}</span>
+                                                <span
+                                                    :class="stateClass(state)"
+                                                    >{{ state }}</span
+                                                >
                                             </SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
