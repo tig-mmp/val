@@ -22,11 +22,14 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
-import type { BreadcrumbItem, Pagination as PaginationType } from '@/types';
+import type {
+    BreadcrumbItem,
+    Order,
+    Pagination as PaginationType,
+} from '@/types';
 
-// const props = defineProps<{ orders: PaginationType<OrderList> }>();
 const props = defineProps<{
-    orders: PaginationType<any>;
+    orders: PaginationType<Order>;
     user_name?: string;
     states?: string[];
     search?: string;
@@ -63,6 +66,7 @@ const stateClass = (state: string): string => {
 };
 
 const updateState = (orderId: number, state: string) => {
+    if (!state) return;
     updateStateForm.state = state;
     updateStateForm.patch(`/orders/${orderId}`, {
         onSuccess: () => {
@@ -159,7 +163,7 @@ const fetch = () => {
                             <TableCell>{{ order.base }}</TableCell>
                             <TableCell>{{
                                 order.order_ingredients
-                                    ?.map((oi) => oi.ingredient.name)
+                                    ?.map((oi) => oi.ingredient?.name)
                                     .join(', ')
                             }}</TableCell>
                             <TableCell>
