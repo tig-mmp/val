@@ -39,14 +39,24 @@ const filters = useForm({
     search: props.search,
 });
 
-const statePending = 'Pendente';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Orders',
         href: '/orders',
     },
 ];
-const optionStates = ref<string[]>([statePending, 'Concluído', 'Cancelado']);
+const statePending = 'Pendente';
+const stateCompleted = 'Concluído';
+const stateCancelled = 'Cancelado';
+const optionStates = ref<string[]>([statePending, stateCompleted, stateCancelled]);
+
+const stateClass = (state: string): string => {
+    return state === statePending
+        ? 'text-yellow-500'
+        : state === stateCompleted
+            ? 'text-green-500'
+            : 'text-red-500';
+}
 
 const updateState = (orderId: number, state: string) => {
     updateStateForm.state = state;
@@ -56,7 +66,6 @@ const updateState = (orderId: number, state: string) => {
         },
     });
 };
-// TODO add state class
 const fetch = () => {
     filters.get('/orders', {
         preserveState: true,
@@ -95,7 +104,7 @@ const fetch = () => {
                                         :key="optionState"
                                         :value="optionState"
                                     >
-                                        {{ optionState }}
+                                        <span :class="stateClass(optionState)">{{ optionState }}</span>
                                     </SelectItem>
                                 </SelectGroup>
                             </SelectContent>
@@ -142,24 +151,23 @@ const fetch = () => {
                                     .join(', ')
                             }}</TableCell>
                             <TableCell>
-                                <template v-if="order.state !== statePending">{{
-                                    order.state
-                                }}</template>
-                                <select
-                                    v-else
-                                    v-model="order.state"
-                                    class="rounded border"
-                                    @change="updateState(order.id, order.state)"
-                                >
-                                    <option
-                                        v-for="state in optionStates"
-                                        :key="state"
-                                        :value="state"
-                                    >
-                                        {{ state }}
-                                    </option>
-                                </select>
-                                <!-- TODO confirmation -->
+                                <span v-if="order.state !== statePending" :class="stateClass(order.state)">{{ order.state }}</span>
+                                <Select v-else v-model="order.state" @update:model-value="(state) => updateState(order.id, state)">
+                                    <SelectTrigger class="w-32">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectItem
+                                                v-for="state in optionStates"
+                                                :key="state"
+                                                :value="state"
+                                            >
+                                                <span :class="stateClass(state)">{{ state }}</span>
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
                             </TableCell>
                         </TableRow>
                     </TableBody>
