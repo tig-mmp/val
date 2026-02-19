@@ -123,9 +123,7 @@ class OrderController extends Controller
 
         $request->validated();
 
-        if (Auth::user()->isClient() && $request->state !== Order::STATE_CANCELLED) {
-            abort(403, 'Clients can only change orders to cancelled status');
-        }
+        abort_if(Auth::user()->isClient() && $request->state !== Order::STATE_CANCELLED, 403, 'Clients can only change orders to cancelled status');
 
         $order->update([
             'state' => $request->state,
