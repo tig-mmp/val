@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
 use App\Models\Order;
 use App\Models\User;
 
@@ -21,9 +20,10 @@ class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        if ($user->role === UserRole::Client) {
+        if ($user->isClient()) {
             return $order->user_id === $user->id;
         }
+
         return true;
     }
 
@@ -40,9 +40,14 @@ class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        if ($user->role === UserRole::Client) {
+        if ($order->state === Order::STATE_COMPLETE) {
+            return false;
+        }
+
+        if ($user->isClient()) {
             return $order->user_id === $user->id && $order->state === Order::STATE_PENDING;
         }
+
         return true;
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserRole;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
@@ -29,7 +28,7 @@ class OrderController extends Controller
 
         $query = Order::query()->with(['user', 'orderIngredients', 'orderIngredients.ingredient']);
 
-        if (Auth::user()->role === UserRole::Client) {
+        if (Auth::user()->isClient()) {
             $query->where('user_id', Auth::user()->id);
         }
 

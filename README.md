@@ -40,3 +40,13 @@ PHP version 8.4
 - Hidden buttons from navbar in frontend
 - Added packages for styling and type checking
     - Added `test` and `lint` commands to composer that runs all the commands in backend and frontend
+- Making use of OrderPolicy
+- The error what was happening during the test was because of the lack of `auth` middleware, so adding oa the `main` branch a closure like this the example bellow will fix it
+    ```php
+        Route::middleware('auth')->group(function (): void {
+            Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+            Route::resource('orders', OrderController::class)->except('create', 'destroy');
+            Route::resource('users', UserController::class)->middleware('isAdmin');
+        });
+    ```
+    

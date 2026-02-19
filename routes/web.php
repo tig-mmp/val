@@ -11,12 +11,10 @@ Route::get('/', fn () => Inertia::render('Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
 ]))->name('home');
 
-
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function (): void {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('orders', OrderController::class)->except('create', 'destroy');
     Route::resource('users', UserController::class)->middleware('isAdmin');
 });
-
 
 require __DIR__.'/settings.php';
