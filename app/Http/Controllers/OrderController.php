@@ -43,11 +43,19 @@ class OrderController extends Controller
         }
 
         if ($search !== '') {
-            $query->whereAny([
-                'size',
-                'base',
-                'state',
-            ], 'like', '%'.$search.'%');
+            $query->where(function (Builder $q) use ($search): void {
+                $q->whereAny([
+                    'size',
+                    'base',
+                    'state',
+                ], 'like', '%'.$search.'%')
+                    ->orWhereHas('user', function (Builder $userQ) use ($search): void {
+                        $userQ->where('name', 'like', '%'.$search.'%');
+                    })
+                    ->orWhereHas('orderIngredients.ingredient', function (Builder $ingredientQ) use ($search): void {
+                        $ingredientQ->where('name', 'like', '%'.$search.'%');
+                    });
+            });
         }
 
         $orders = $query->paginate(10);

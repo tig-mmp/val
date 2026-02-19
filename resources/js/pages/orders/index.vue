@@ -5,6 +5,14 @@ import Pagination from '@/components/Pagination.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     Table,
     TableBody,
     TableCaption,
@@ -24,10 +32,7 @@ const props = defineProps<{
     search?: string;
 }>();
 
-const updateStateForm = useForm<{
-    orderId: number | null;
-    state: string | null;
-}>({ orderId: null, state: null });
+const updateStateForm = useForm<{state: string | null}>({ state: null });
 const filters = useForm({
     user_name: props.user_name,
     states: props.states,
@@ -51,6 +56,7 @@ const updateState = (orderId: number, state: string) => {
         },
     });
 };
+// TODO add state class
 const fetch = () => {
     filters.get('/orders', {
         preserveState: true,
@@ -78,19 +84,22 @@ const fetch = () => {
                     </div>
                     <div class="flex flex-col">
                         <Label for="filter-states">Estados</Label>
-                        <select
-                            v-model="filters.states"
-                            class="rounded border"
-                            @change="fetch"
-                        >
-                            <option
-                                v-for="state in optionStates"
-                                :key="state"
-                                :value="state"
-                            >
-                                {{ state }}
-                            </option>
-                        </select>
+                        <Select v-model="filters.states" multiple @update:model-value="fetch">
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select os estados" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem
+                                        v-for="optionState in optionStates"
+                                        :key="optionState"
+                                        :value="optionState"
+                                    >
+                                        {{ optionState }}
+                                    </SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div class="flex flex-col">
                         <Label for="filter-name">Pesquisa avançada</Label>
